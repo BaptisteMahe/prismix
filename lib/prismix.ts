@@ -227,10 +227,9 @@ export async function prismix(options: PrismixOptions) {
     const fullPath = path.join(process.cwd(), mixer.output)
     const directories = fullPath.split(path.sep);
     directories.pop();
-    console.log(path.join(...directories));
-    console.log(exists(path.join(...directories)));
-    if (!await exists(path.join(...directories)))
-      await mkdir(path.join(...directories), { recursive: true });
+    const outputDirectory = path.sep + path.join(...directories)
+    if (!await exists(outputDirectory))
+      await mkdir(outputDirectory, { recursive: true });
 
     await writeFile(fullPath, outputSchema);
   }
