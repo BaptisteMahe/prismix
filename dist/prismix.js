@@ -168,6 +168,8 @@ function prismix(options) {
             const fullPath = path_1.default.join(process.cwd(), mixer.output);
             const directories = fullPath.split(path_1.default.sep);
             directories.pop();
+            console.log(path_1.default.join(...directories));
+            console.log(exists(path_1.default.join(...directories)));
             if (!(yield exists(path_1.default.join(...directories))))
                 yield mkdir(path_1.default.join(...directories), { recursive: true });
             yield writeFile(fullPath, outputSchema);
