@@ -94,14 +94,14 @@ function renderOutput(path) {
     return path ? `output = "${path}"` : '';
 }
 function renderBinaryTargets(binaryTargets) {
-    return (binaryTargets === null || binaryTargets === void 0 ? void 0 : binaryTargets.length) ? `binaryTargets = ${JSON.stringify(binaryTargets)}` : '';
+    return (binaryTargets === null || binaryTargets === void 0 ? void 0 : binaryTargets.length) ? `binaryTargets = ${JSON.stringify(binaryTargets.map(binaryTarget => binaryTarget.value))}` : '';
 }
 function renderPreviewFeatures(previewFeatures) {
     return previewFeatures.length ? `previewFeatures = ${JSON.stringify(previewFeatures)}` : '';
 }
 function renderBlock(type, name, things, documentation) {
     return `${renderDocumentation(documentation)}${type} ${name} {\n${things
-        .filter((thing) => thing.length > 1)
+        .filter((thing) => thing.length > 0)
         .map((thing) => `\t${thing}`)
         .join('\n')}\n}`;
 }

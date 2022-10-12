@@ -14,6 +14,8 @@ import { CustomAttributes, Field, Model } from './dmmf-extension';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const exists = promisify(fs.exists);
+const mkdir = promisify(fs.mkdir);
 
 export interface MixerOptions {
   input: string[];
@@ -222,6 +224,12 @@ export async function prismix(options: PrismixOptions) {
       .filter((e) => e)
       .join('\n');
 
-    await writeFile(path.join(process.cwd(), mixer.output), outputSchema);
+    const fullPath = path.join(process.cwd(), mixer.output)
+    const directories = fullPath.split(path.sep);
+    directories.pop();
+    if (!await exists(path.join(...directories)))
+      await mkdir(path.join(...directories), { recursive: true });
+
+    await writeFile(fullPath, outputSchema);
   }
 }

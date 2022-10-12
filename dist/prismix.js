@@ -21,6 +21,8 @@ const deserializer_1 = require("./deserializer");
 const glob_1 = __importDefault(require("glob"));
 const readFile = util_1.promisify(fs_1.default.readFile);
 const writeFile = util_1.promisify(fs_1.default.writeFile);
+const exists = util_1.promisify(fs_1.default.exists);
+const mkdir = util_1.promisify(fs_1.default.mkdir);
 function getSchema(schemaPath) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -163,7 +165,12 @@ function prismix(options) {
             ]
                 .filter((e) => e)
                 .join('\n');
-            yield writeFile(path_1.default.join(process.cwd(), mixer.output), outputSchema);
+            const fullPath = path_1.default.join(process.cwd(), mixer.output);
+            const directories = fullPath.split(path_1.default.sep);
+            directories.pop();
+            if (!(yield exists(path_1.default.join(...directories))))
+                yield mkdir(path_1.default.join(...directories), { recursive: true });
+            yield writeFile(fullPath, outputSchema);
         }
     });
 }
